@@ -45,3 +45,12 @@ a { color: #204837; text-underline-offset: .2em; }
 .book-link:hover { background: #163525; }
 @keyframes check-appear { from { transform: scale(.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .success-check { animation: none; } }
+
+.libraries { margin-top: 1rem; }
+.libraries h2 { margin-top: 0; }
+.libraries p, .save-controls p { color: #43594e; line-height: 1.5; font-size: .9rem; }
+.libraries ul { padding-left: 1.25rem; }
+.libraries li { margin: .8rem 0; overflow-wrap: anywhere; }
+.save-controls { margin-bottom: 1.3rem; }
+.save-controls > input { width: 100%; margin-bottom: .8rem; }
+select { min-height: 2.8rem; flex: 1; min-width: 0; padding: .5rem; border: 1px solid #aebeb3; border-radius: .55rem; font: inherit; background: white; color: inherit; }

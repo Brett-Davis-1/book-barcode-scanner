@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Scan a book's ISBN barcode with your camera or a photo.">
   <title>Bookscan · ISBN scanner</title>
-  <link rel="stylesheet" href="./style.css?v=2">
-  <script type="module" src="./app.js?v=2"></script>
+  <link rel="stylesheet" href="./style.css?v=4">
+  <script type="module" src="./app.js?v=4"></script>
 </head>
 <body>
   <main>
@@ -22,6 +22,13 @@
           <path class="corners" d="M4 30V4h26m200 0h26v26m0 64v26h-26m-200 0H4V94"/>
           <path class="bars" d="M67 35v54m10-54v54m11-54v54m17-54v54m10-54v54m14-54v54m18-54v54m11-54v54m15-54v54m10-54v54m10-54v54"/>
         </svg>
+        <div id="scan-success" class="scan-success" hidden aria-hidden="true">
+          <svg viewBox="0 0 100 100" class="success-check">
+            <circle cx="50" cy="50" r="46"/>
+            <path d="M28 50 43 65 73 35"/>
+          </svg>
+          <strong>Book scanned!</strong>
+        </div>
       </div>
       <div class="actions">
         <button id="camera" type="button">Start camera</button>
@@ -38,11 +45,12 @@
       </form>
     </section>
     <section id="result" class="panel result" aria-label="ISBN result" hidden>
+      <h2>Your book is one tap away.</h2>
       <p id="format" class="eyebrow"></p>
       <output id="value" aria-live="polite"></output>
       <div class="actions">
+        <a id="lookup" class="book-link" target="_blank" rel="noopener noreferrer">View book on Open Library ↗</a>
         <button id="copy" class="secondary" type="button">Copy ISBN</button>
-        <a id="lookup" target="_blank" rel="noopener noreferrer">Search Open Library ↗</a>
       </div>
     </section>
   </main>

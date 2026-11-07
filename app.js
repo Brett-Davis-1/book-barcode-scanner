@@ -16,7 +16,16 @@ function getReader() {
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/zxing-browser.min.js";
     script.onload = () => {
-      if (window.ZXingBrowser) resolve(new window.ZXingBrowser.BrowserMultiFormatOneDReader());
+      if (window.ZXingBrowser) {
+        // DecodeHintType values in the pinned ZXing release.
+        const POSSIBLE_FORMATS = 2;
+        const TRY_HARDER = 3;
+        const hints = new Map([
+          [POSSIBLE_FORMATS, [window.ZXingBrowser.BarcodeFormat.EAN_13]],
+          [TRY_HARDER, true]
+        ]);
+        resolve(new window.ZXingBrowser.BrowserMultiFormatOneDReader(hints));
+      }
       else reject(new Error("Barcode decoder unavailable"));
     };
     script.onerror = () => reject(new Error("Barcode decoder unavailable"));
@@ -69,10 +78,13 @@ camera.addEventListener("click", async () => {
     // Use a separate video per attempt so a late permission response cannot replace a newer stream.
     const video = preview.cloneNode();
     video.removeAttribute("id");
+    video.hidden = false;
+    video.muted = true;
+    video.playsInline = true;
     preview.before(video);
     const controls = await reader.decodeFromConstraints({
       audio: false,
-      video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 } }
+      video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }
     }, video, (result, error, scanner) => {
       if (attempt !== operation) {
         scanner.stop();
@@ -99,7 +111,12 @@ camera.addEventListener("click", async () => {
     }
     activeScan = { stop() { controls.stop(); video.remove(); } };
     video.hidden = false;
-    status.textContent = "Center the whole barcode inside the frame and hold steady.";
+    status.textContent = "Hold the barcode horizontally, fill most of the camera view, and move back until the lines look sharp.";
+    const track = video.srcObject?.getVideoTracks()[0];
+    const capabilities = track?.getCapabilities?.();
+    if (capabilities?.focusMode?.includes("continuous")) {
+      track.applyConstraints({ advanced: [{ focusMode: "continuous" }] }).catch(() => {});
+    }
   } catch (error) {
     if (attempt !== operation) return;
     resetCamera();

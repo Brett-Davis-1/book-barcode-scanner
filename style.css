@@ -14,12 +14,12 @@ header { margin-bottom: 1.65rem; }
 h1 { font: 500 clamp(3.6rem, 10vw, 6rem)/1 Georgia, serif; letter-spacing: -.065em; margin: .65rem 0; }
 .intro { color: #43594e; margin: 0; line-height: 1.5; }
 .panel { background: #fffdf7; padding: clamp(.85rem, 4vw, 1.35rem); border: 1px solid #d8dfd4; border-radius: 1.2rem; }
-.viewfinder { aspect-ratio: 16 / 8; position: relative; overflow: hidden; display: grid; place-items: center; border-radius: .75rem; background: radial-gradient(ellipse, #2d5142, #162c24); }
+.viewfinder { aspect-ratio: 4 / 3; position: relative; overflow: hidden; display: grid; place-items: center; border-radius: .75rem; background: radial-gradient(ellipse, #2d5142, #162c24); }
 video { position: absolute; width: 100%; height: 100%; object-fit: contain; background: #111; }
 .target { position: relative; width: min(68%, 18rem); fill: none; stroke-linecap: round; pointer-events: none; }
 .corners { stroke: #c8edaa; stroke-width: 3; }
 .bars { stroke: #b4cdbd; stroke-width: 3; opacity: .65; }
-video:not([hidden]) + .target .bars { display: none; }
+video:not([hidden]) ~ .target .bars { display: none; }
 .actions, .entry { display: flex; flex-wrap: wrap; gap: .65rem; align-items: center; }
 .actions { margin-top: .85rem; }
 button, input { font: inherit; min-height: 2.8rem; border-radius: .55rem; }

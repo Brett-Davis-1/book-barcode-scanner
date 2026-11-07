@@ -10,6 +10,7 @@ const status = get("status");
 let activeScan;
 let readerPromise;
 let operation = 0;
+let successTimer;
 
 function getReader() {
   readerPromise ??= new Promise((resolve, reject) => {
@@ -39,6 +40,8 @@ function getReader() {
 
 function resetCamera() {
   operation += 1;
+  clearTimeout(successTimer);
+  get("scan-success").hidden = true;
   activeScan?.stop();
   activeScan = undefined;
   preview.hidden = true;
@@ -47,11 +50,23 @@ function resetCamera() {
 
 function showIsbn(value) {
   resetCamera();
+  const attempt = operation;
+  get("result").hidden = true;
   get("format").textContent = value.length === 13 ? "ISBN-13" : "ISBN-10";
   get("value").textContent = value;
   get("lookup").href = "https://openlibrary.org/isbn/" + value;
-  get("result").hidden = false;
-  status.textContent = "ISBN found.";
+  get("scan-success").hidden = false;
+  status.textContent = "Barcode scanned successfully.";
+  successTimer = setTimeout(() => {
+    if (attempt !== operation) return;
+    get("scan-success").hidden = true;
+    get("result").hidden = false;
+    status.textContent = "Your book link is ready.";
+    get("result").scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      block: "nearest"
+    });
+  }, 900);
 }
 
 function bookBarcode(value) {
@@ -69,7 +84,9 @@ camera.addEventListener("click", async () => {
     status.textContent = "Camera access needs HTTPS or localhost. Try a photo or enter the ISBN.";
     return;
   }
-  const attempt = ++operation;
+  resetCamera();
+  get("result").hidden = true;
+  const attempt = operation;
   camera.textContent = "Stop camera";
   status.textContent = "Starting camera…";
   try {
@@ -136,6 +153,7 @@ file.addEventListener("change", async () => {
   file.value = "";
   if (!image) return;
   resetCamera();
+  get("result").hidden = true;
   const attempt = operation;
   const url = URL.createObjectURL(image);
   status.textContent = "Reading photo…";

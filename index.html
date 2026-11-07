@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Scan a book's ISBN barcode with your camera or a photo.">
   <title>Bookscan · ISBN scanner</title>
-  <link rel="stylesheet" href="./style.css?v=4">
-  <script type="module" src="./app.js?v=4"></script>
+  <link rel="stylesheet" href="./style.css?v=5">
+  <script type="module" src="./app.js?v=5"></script>
 </head>
 <body>
   <main>
@@ -46,12 +46,36 @@
     </section>
     <section id="result" class="panel result" aria-label="ISBN result" hidden>
       <h2>Your book is one tap away.</h2>
+      <div class="save-controls">
+        <label for="book-title">Book title (optional)</label>
+        <input id="book-title" maxlength="200" placeholder="Give this book a name">
+        <label for="library-select">Save to library</label>
+        <div class="entry">
+          <select id="library-select" aria-label="Save to library"></select>
+          <button id="save-book" type="button">Add book</button>
+        </div>
+        <p>Create a library below if you don't have one yet.</p>
+      </div>
       <p id="format" class="eyebrow"></p>
       <output id="value" aria-live="polite"></output>
       <div class="actions">
         <a id="lookup" class="book-link" target="_blank" rel="noopener noreferrer">View book on Open Library ↗</a>
         <button id="copy" class="secondary" type="button">Copy ISBN</button>
       </div>
+    </section>
+    <section class="panel libraries" aria-label="Your libraries">
+      <h2>Your libraries</h2>
+      <p>Saved in this browser on this device. Clearing browser data removes your libraries.</p>
+      <form id="create-library">
+        <label for="library-name">New library name</label>
+        <div class="entry">
+          <input id="library-name" required maxlength="80" placeholder="Home library">
+          <button>Create library</button>
+        </div>
+      </form>
+      <p id="library-message" role="status"></p>
+      <p id="libraries-empty">Create your first library, then add a scanned book.</p>
+      <div id="libraries-list"></div>
     </section>
   </main>
 </body>
